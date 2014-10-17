@@ -9,7 +9,6 @@ except ImportError as e:
 from os import environ
 import dj_database_url
 
-
 #Don't use trailing slash!
 BASE_URL = 'https://barachiel.herokuapp.com'
 
@@ -37,6 +36,8 @@ LOGTAILER_HISTORY_LINES = 1000
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 CONN_MAX_AGE = 60
+
+print "+ + + + + + + + + + + + DEBUG="+str(DEBUG==True)
 
 # Parse database configuration from $DATABASE_URL
 DATABASES = {

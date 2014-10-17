@@ -1,5 +1,5 @@
 cd $(dirname $0)
 
 heroku apps:create barachiel
-sh setup.sh
-sh deploy.sh
+sh heroku/setup.sh
+sh heroku/deploy.sh

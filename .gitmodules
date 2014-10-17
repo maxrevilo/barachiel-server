@@ -1,0 +1,9 @@
+[submodule "libs/python-push"]
+	path = libs/python-push
+	url = git://github.com/maxrevilo/python-push.git
+[submodule "libs/asynchttp"]
+	path = libs/asynchttp
+	url = git://github.com/ross/python-asynchttp.git
+[submodule "libs/django-logtailer"]
+	path = libs/django-logtailer
+    url = git://github.com/throoze/django-logtailer.git
