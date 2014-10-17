@@ -1,0 +1,25 @@
+#############################################################
+###                        Waving!                        ###
+#############################################################
+
+Thank you for signing up!
+-------------------------
+
+We have registered an account under this e-mail address ({{ user.email }}),
+on behalf of {{ user.name }}. This account will be active during the next
+{{ grace_time }} day(s). If you wish your account to be permanent, please
+go to your profile, and then select 'Confirm my E-Mail address'. A
+confirmation code will be requested. Please, enter the following code:
+
+
+{{ token }}
+
+
+If you have not signed up in Waving, just ignore this email and any other
+from us until the {{ grace_time }} day(s) period have ended, and this
+account will be automatically deactivated.
+
+Kind regards,
+
+--
+The Waving team.

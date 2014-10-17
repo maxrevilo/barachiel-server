@@ -1,0 +1,66 @@
+{% extends "html/base.html" %}
+
+{% block headers %}
+    {% if settings.DEBUG %}
+        <link href="app.less" type="text/css" rel="stylesheet/less">
+    {% else %}
+        <link rel="stylesheet" href="app.full.min.css">
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <!--div>
+      <div id="content" class="container">
+        <div class="row">
+          <div ui-view>
+          </div>
+        </div>
+      </div>
+    </div-->
+    <div class="container-fluid" ui-view>
+    </div>
+
+{% endblock %}
+
+{% block post_load_headers %}
+
+    {% if settings.DEBUG %}
+
+        <!-- JS from Bower Components -->
+        <script src="bower_components/less.js/dist/less-1.6.2.js" data-concat="false"></script>
+        <script src="bower_components/jquery/jquery.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="bower_components/underscore/underscore.js"></script>
+        <script src="bower_components/moment/moment.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
+        <script src="bower_components/angular-django-rest-resource/angular-django-rest-resource.js"></script>
+        <script src="bower_components/angular-underscore-module/angular-underscore-module.js"></script>
+        <!-- Add New Bower Component JS Above -->
+
+        <!-- Main App JS -->
+        <script src="app.js"></script>
+        <script src="collab_module/collab_module.js"></script>
+        <script src="collab_module/partial/main/main.js"></script>
+        <script src="collab_module/partial/login/login.js"></script>
+        <script src="collab_module/object-stock-modal/object-stock-modal.js"></script>
+        <script src="collab_module/add-object-modal/add-object-modal.js"></script>
+        <script src="collab_module/detail-object-modal/detail-object-modal.js"></script>
+        <script src="collab_module/service/User.js"></script>
+        <script src="collab_module/service/Application.js"></script>
+        <script src="collab_module/service/Collaborator.js"></script>
+        <script src="collab_module/service/Object.js"></script>
+        <script src="collab_module/service/Subject.js"></script>
+        <script src="collab_module/directive/setRole/setRole.js"></script>
+        <script src="collab_module/add-subject-modal/add-subject-modal.js"></script>
+        <!-- Add New Component JS Above -->
+    {% else %}
+        <script src="app.full.min.js"></script>
+    {% endif %}
+
+    
+{% endblock %}

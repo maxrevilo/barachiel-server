@@ -1,0 +1,12 @@
+[
+{
+    "pk": 1, 
+    "model": "push.device", 
+    "fields": {
+        "token": "Web Browser Token 1", 
+        "type": "WB", 
+        "user": 1, 
+        "last_sync": "2014-06-06T17:18:49.713"
+    }
+}
+]

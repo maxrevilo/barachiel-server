@@ -1,0 +1,98 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+    <html xmlns:ng="http://angularjs.org" class="no-js lt-ie9 lt-ie8 lt-ie7">
+<![endif]-->
+<!--[if IE 7]>
+    <html xmlns:ng="http://angularjs.org" class="no-js lt-ie9 lt-ie8">
+<![endif]-->
+<!--[if IE 8]>
+    <html xmlns:ng="http://angularjs.org" class="no-js lt-ie9">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" ng-app="collab-fe"><!--<![endif]-->
+    <head>
+        <!-- IE COMPATIBILITY -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <!--[if lte IE 8]>
+            <script src="http://cdnjs.cloudflare.com/ajax/libs/json2/20130526/json2.js"></script>
+            <script>
+                //For Angular
+                document.createElement('ng-include');
+                document.createElement('ng-pluralize');
+                document.createElement('ng-view');
+                // Optionally these for CSS
+                document.createElement('ng:include');
+                document.createElement('ng:pluralize');
+                document.createElement('ng:view');
+                // Custom
+                document.createElement('name');
+            </script>
+        <![endif]-->
+
+        <base href="{% static './' %}" />
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>{{SITE_NAME}}</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="shortcut icon" href="favicon.ico?v=0.0" />
+
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,500,700,900,100italic' rel='stylesheet' type='text/css'>
+        <!--link rel="icon" type="image/png" href="favicon.png?v=X.X" /-->
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <style>[ng-cloak] { display: none; }</style>
+
+        <script>
+            // Include angular-loader to allow modules to be loaded in any order.
+            /*
+               AngularJS v1.0.2
+               (c) 2010-2012 Google, Inc. http://angularjs.org
+               License: MIT
+             */
+            (function(i){'use strict';function d(c,b,e){return c[b]||(c[b]=e())}return d(d(i,"angular",Object),"module",function(){var c={};return function(b,e,f){e&&c.hasOwnProperty(b)&&(c[b]=null);return d(c,b,function(){function a(a,b,d){return function(){c[d||"push"]([a,b,arguments]);return g}}if(!e)throw Error("No module: "+b);var c=[],d=[],h=a("$injector","invoke"),g={_invokeQueue:c,_runBlocks:d,requires:e,name:b,provider:a("$provide","provider"),factory:a("$provide","factory"),service:a("$provide","service"), value:a("$provide","value"),constant:a("$provide","constant","unshift"),filter:a("$filterProvider","register"),controller:a("$controllerProvider","register"),directive:a("$compileProvider","directive"),config:h,run:function(a){d.push(a);return this}};f&&h(f);return g})}})})(window);
+        </script>
+
+        <script type="text/javascript">
+            window.API_URL = "{{ BASE_URL }}/{{COLLABORATORS_URL}}/";
+        </script>
+
+        {% block headers %}{% endblock %}
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+
+        {% block content %}{% endblock %}
+
+        {% block post_load_headers %}{% endblock %}
+
+        {% if not settings.DEBUG %}
+            <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+            <script>
+                (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+                function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+                e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+                e.src='//www.google-analytics.com/analytics.js';
+                r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+                ga('create','UA-XXXXX-X');ga('send','pageview');
+            </script>
+        {% endif %}
+
+       
+    </body>
+</html>

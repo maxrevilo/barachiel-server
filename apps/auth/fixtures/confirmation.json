@@ -1,0 +1,98 @@
+[
+{
+    "pk": 1, 
+    "model": "auth.confirmation", 
+    "fields": {
+        "created_at": "2014-06-06T17:10:11.732", 
+        "phone": null, 
+        "token": "PT55441J", 
+        "confirmation_type": "E", 
+        "user": 1, 
+        "email": "test1@t.com"
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.confirmation", 
+    "fields": {
+        "created_at": "2014-06-06T17:10:26.239", 
+        "phone": null, 
+        "token": "5p24fB0d", 
+        "confirmation_type": "E", 
+        "user": 2, 
+        "email": "test2@t.com"
+    }
+},
+{
+    "pk": 3, 
+    "model": "auth.confirmation", 
+    "fields": {
+        "created_at": "2014-06-06T17:10:35.522", 
+        "phone": null, 
+        "token": "qR5UHdEH", 
+        "confirmation_type": "E", 
+        "user": 3, 
+        "email": "test3@t.com"
+    }
+},
+{
+    "pk": 4, 
+    "model": "auth.confirmation", 
+    "fields": {
+        "created_at": "2014-06-06T17:10:39.980", 
+        "phone": null, 
+        "token": "YTUsKqID", 
+        "confirmation_type": "E", 
+        "user": 4, 
+        "email": "test4@t.com"
+    }
+},
+{
+    "pk": 5, 
+    "model": "auth.confirmation", 
+    "fields": {
+        "created_at": "2014-06-06T17:10:46.379", 
+        "phone": null, 
+        "token": "Yt9PjqLo", 
+        "confirmation_type": "E", 
+        "user": 5, 
+        "email": "test5@t.com"
+    }
+},
+{
+    "pk": 6, 
+    "model": "auth.confirmation", 
+    "fields": {
+        "created_at": "2014-06-06T17:11:15.251", 
+        "phone": null, 
+        "token": "yOXZTeZV", 
+        "confirmation_type": "E", 
+        "user": 6, 
+        "email": "test6@t.com"
+    }
+},
+{
+    "pk": 7, 
+    "model": "auth.confirmation", 
+    "fields": {
+        "created_at": "2014-06-06T17:11:21.451", 
+        "phone": null, 
+        "token": "1cFP3CGo", 
+        "confirmation_type": "E", 
+        "user": 7, 
+        "email": "test7@t.com"
+    }
+},
+{
+    "pk": 8, 
+    "model": "auth.confirmation", 
+    "fields": {
+        "created_at": "2014-06-08T18:20:52.479", 
+        "phone": null, 
+        "token": "E1XSbaE4", 
+        "confirmation_type": "E", 
+        "user": 8, 
+        "email": "o@o.com"
+    }
+}
+]

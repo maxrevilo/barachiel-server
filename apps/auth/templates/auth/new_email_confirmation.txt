@@ -1,0 +1,15 @@
+#############################################################
+###                        Waving!                        ###
+#############################################################
+
+We have registered a new e-mail address ({{ user.email }}), on behalf of
+{{ user.name }}. Please go to your profile, and then select 'Confirm my E-Mail address'. A confirmation code will be requested. Please, enter the following code:
+
+
+{{ token }}
+
+
+Kind regards,
+
+--
+The Waving team.
