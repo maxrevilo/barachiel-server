@@ -13,6 +13,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
 from django.views.generic import View
 from django.forms.util import ErrorList
+from django.conf import settings
 
 from apps.users.models import User
 from apps.auth.signals import user_with_new_email
@@ -77,8 +78,7 @@ class ResetPasswordView(View):
             user.set_password(newPassword)
             user.save()
             email = 'You have asked for a new password, since you forgot your old one. Please take note of the new one, and change it, as soon as possible, for one easier for you to remember.\n\nUser: %s\nE-Mail: %s\nPassword: %s\n\n--\nThe Waving team.' % (user.name, user.email, newPassword)
-            from settings import DEFAULT_FROM_EMAIL, EMAIL_SUBJECT_PREFIX
-            send_mail(EMAIL_SUBJECT_PREFIX + 'Password reset', email, DEFAULT_FROM_EMAIL, [email_address])
+            send_mail(settings.EMAIL_SUBJECT_PREFIX + 'Password reset', email, settings.DEFAULT_FROM_EMAIL, [email_address])
             return HttpResponse()
         else:
             return HttpResponseBadRequest(json.dumps(form.errors), mimetype='application/json')

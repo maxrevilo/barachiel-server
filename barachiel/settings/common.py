@@ -19,7 +19,7 @@ USE_I18N = False
 USE_L10N = False
 USE_TZ = False
 
-APPEND_SLASH = True
+# APPEND_SLASH = True
 
 THUMBNAIL_ENGINE = 'sorl.thumbnail.engines.convert_engine.Engine'
 

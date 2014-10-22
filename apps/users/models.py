@@ -1,7 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from datetime import timedelta, datetime
 from django import forms
 from django.db import models
+from django.conf import settings
 from django.template import loader
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.contrib.auth.hashers import check_password, make_password
@@ -393,12 +395,10 @@ class User(AbstractBaseUser):
                 if user_just_created:
                     subject += 'Thank you for joining us!'
                 subject += ' Please, confirm your E-Mail address'
-            from settings import ACCOUNT_GRACE_TIME, BASE_URL
-            from datetime import timedelta, datetime
 
-            grace_time = (self.email_confirmation_created_at + timedelta(days=ACCOUNT_GRACE_TIME)) - datetime.now()
+            grace_time = (self.email_confirmation_created_at + timedelta(days=settings.ACCOUNT_GRACE_TIME)) - datetime.now()
             context = {
-                'BASE_URL':     BASE_URL,
+                'BASE_URL':     settings.BASE_URL,
                 'user':         self,
                 'grace_time':   grace_time.days,
                 'token':        self.email_confirmation_token,
@@ -418,8 +418,7 @@ class User(AbstractBaseUser):
             emailAddress = self.email
 
         if from_email == '':
-            from settings import DEFAULT_FROM_EMAIL
-            from_email = DEFAULT_FROM_EMAIL
+            from_email = settings.DEFAULT_FROM_EMAIL
         email = EmailMultiAlternatives(subject, primary_content, from_email, [emailAddress])
         if html:
             email.content_subtype = "html"
