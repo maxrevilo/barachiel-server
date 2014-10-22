@@ -1,8 +1,10 @@
 #file: multimedia/models.py
+# import os
+import uuid
 from django.db import models
+# from django.conf import settings
 from sorl.thumbnail import get_thumbnail
 from time import mktime
-import uuid
 # import random
 
 
@@ -43,33 +45,34 @@ class Media(models.Model):
             file=request.FILES[u'file'],
             uploader=request.user
         )
+        # TODO: Append file extension or convert the image to jpg.
         media.file.name = str(uuid.uuid4())
-        media.save()
-        oldname = media.file.name
-        oldnamelist = oldname.split('/')
-        modelname = model.__class__.__name__
-        newname = oldnamelist[0] + '/' + modelname + '_' + str(model.id) + '_' + str(media.id) + '_' + oldnamelist[1]
+        # media.save()
 
-        import os
-        import settings
-        os.rename(os.path.join(settings.MEDIA_ROOT, oldname), os.path.join(settings.MEDIA_ROOT, newname))
-        media.file.name = newname
-        media.save()
+        # oldname = media.file.name
+        # oldnamelist = oldname.split('/')
+        # modelname = model.__class__.__name__
+        # newname = oldnamelist[0] + '/' + modelname + '_' + str(model.id) + '_' + str(media.id) + '_' + oldnamelist[1]
+
+        # os.rename(os.path.join(settings.MEDIA_ROOT, oldname), os.path.join(settings.MEDIA_ROOT, newname))
+        # media.file.name = newname
+        # media.save()
 
         if media.file.size > 10e6:
             return None
         else:
             media.save()
 
-            if model.picture is not None:
-                path = os.path.join(settings.MEDIA_ROOT, str(model.picture.file))
-                try:
-                    os.remove(path)
-                    print path
-                except OSError:
-                    pass
-                old_instance = Media.objects.get(id=model.picture.id)
-                old_instance.delete()
+            # TODO: https://trello.com/c/uy6vBliW
+            # if model.picture is not None:
+            #     path = os.path.join(settings.MEDIA_ROOT, str(model.picture.file))
+            #     try:
+            #         os.remove(path)
+            #         print path
+            #     except OSError:
+            #         pass
+            #     old_instance = Media.objects.get(id=model.picture.id)
+            #     old_instance.delete()
 
             model.picture = media
             model.save()
@@ -77,25 +80,30 @@ class Media(models.Model):
             return media
 
     def preview(self, user):
-        from django.core.files import File
+        from django.core.files.storage import default_storage as storage
+
+        fh = storage.open(self.file.name, "w")
+
+        print '+ + + +  file path + + + ' + self.file.url
+        # file_path = self.file.url
 
         result = {
             "id": self.pk,
             "type": self.type,
-            "xLit": get_thumbnail(self.file.path, "80x80", crop='center', quality=90).url,
-            "xBig": get_thumbnail(self.file.path, "1080x1080", crop='center').url,
+            "xLit": get_thumbnail(fh, "80x80", crop='center', quality=90).url,
+            "xBig": get_thumbnail(fh, "1080x1080", crop='center').url,
             "xFull": self.file.url,
             "uploader_id": self.uploader.id
         }
 
-        img_file = self.file
+        # from django.core.files import File
+        # img_file = self.file
+        # if self.type == Media.TYPE_IMAGE:
+        #     img_file = File(open(self.file.path))
+        # else:
+        #     img_file = File(open(self.file.path.replace(".webm", ".png")))
 
-        if self.type == Media.TYPE_IMAGE:
-            img_file = File(open(self.file.path))
-        else:
-            img_file = File(open(self.file.path.replace(".webm", ".png")))
-
-        result["x128"] = get_thumbnail(img_file, "128x128", crop='center', quality=80).url
+        # result["x128"] = get_thumbnail(img_file, "128x128", crop='center', quality=80).url
 
         return result
 

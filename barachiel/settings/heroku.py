@@ -8,6 +8,7 @@ except ImportError as e:
 
 from os import environ
 import dj_database_url
+# from S3 import CallingFormat
 
 #Don't use trailing slash!
 BASE_URL = 'https://barachiel.herokuapp.com'
@@ -23,11 +24,22 @@ MIDDLEWARE_CLASSES += (
 )
 
 INSTALLED_APPS += (
+    'storages',
     'south',
 )
 
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+AWS_ACCESS_KEY_ID = environ.get('AWS_ACCESS_KEY_ID', '')
+AWS_SECRET_ACCESS_KEY = environ.get('AWS_SECRET_ACCESS_KEY', '')
+AWS_STORAGE_BUCKET_NAME = environ.get('AWS_STORAGE_BUCKET_NAME', '')
+# AWS_CALLING_FORMAT = CallingFormat.SUBDOMAIN
+# AWS_HEADERS = {
+#     'Expires': 'Thu, 15 Apr 2010 20:00:00 GMT',
+#     'Cache-Control': 'max-age=86400',
+# }
+
 MEDIA_ROOT = join(PUBLIC_DIR, 'media')
-MEDIA_URL = 'media/'
+MEDIA_URL = "http://s3.amazonaws.com/%s/" % AWS_STORAGE_BUCKET_NAME
 STATIC_ROOT = join(PUBLIC_DIR, 'static')
 STATIC_URL = '/static/'
 
@@ -36,8 +48,6 @@ LOGTAILER_HISTORY_LINES = 1000
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 CONN_MAX_AGE = 60
-
-print "+ + + + + + + + + + + + DEBUG="+str(DEBUG==True)
 
 # Parse database configuration from $DATABASE_URL
 DATABASES = {

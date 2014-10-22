@@ -21,6 +21,8 @@ USE_TZ = False
 
 APPEND_SLASH = True
 
+THUMBNAIL_ENGINE = 'sorl.thumbnail.engines.convert_engine.Engine'
+
 STATICFILES_DIRS = (
     string.replace(join(PROJECT_DIR, 'static/'), '\\', '/'),
 )
