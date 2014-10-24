@@ -72,7 +72,7 @@ class Like(models.Model):
         return result
 
     def __unicode__(self):
-        return self.name
+        return "%s To %s" % (self.liker.name, self.liked.name)
 
     class Meta:
         unique_together = ('liker', 'liked')

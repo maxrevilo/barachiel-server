@@ -43,6 +43,9 @@ class Device(models.Model):
     def serialize(self, user):
         return self.preview(user)
 
+    def __unicode__(self):
+        return "%s - %s" % (self.type, self.token,)
+
 
 class Chunk(models.Model):
     """A chunk of data waiting to be sync"""

@@ -36,11 +36,14 @@ def subscribe(request):
     except IntegrityError:
         try:
             device = request.user.devices.get(token=token_r, type=type_r)
+            print "Device already registered, ok. %s" % str(device)
         except ObjectDoesNotExist:
             return HttpResponseBadRequest("A device with that token is already used by other user.")
 
     except FieldError:
             return HttpResponseBadRequest('Incorrect "type" value.')
+    else:
+        print "New device registered. %s" % str(device)
 
     return HttpResponse(json.dumps(device.preview(user=request.user)),
                              mimetype='application/json')
