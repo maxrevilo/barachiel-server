@@ -382,8 +382,6 @@ class User(AbstractBaseUser):
                     conf.save()
 
     def send_confirmation_mail(self, user_just_created, template='', subject=''):
-        return
-
         if not self.email_is_confirmed:
             if template == '':
                 if user_just_created:
@@ -391,9 +389,9 @@ class User(AbstractBaseUser):
                 else:
                     template = 'auth/new_email_confirmation.html'  # cambiar
             if subject == '':
-                subject += '[Waving] '
+                subject += settings.EMAIL_SUBJECT_PREFIX
                 if user_just_created:
-                    subject += 'Thank you for joining us!'
+                    subject += ' Thank you for joining us!'
                 subject += ' Please, confirm your E-Mail address'
 
             grace_time = (self.email_confirmation_created_at + timedelta(days=settings.ACCOUNT_GRACE_TIME)) - datetime.now()
@@ -407,8 +405,12 @@ class User(AbstractBaseUser):
             self._send_mail_from_template(subject, template, context)
 
     def send_confirmation_reminder_mail(self):
-        subject = '[Waving] Email confirmation reminder'
+        subject = settings.EMAIL_SUBJECT_PREFIX + 'Email confirmation reminder'
         self.send_confirmation_mail(user_just_created=False, subject=subject)
+
+    def _set_mandrill_options_on_email(self, message):
+        message.inline_css = True
+        return message
 
     def _send_multi_mail(self, subject, primary_content, alternatives, from_email='', html=True):
 
@@ -424,6 +426,9 @@ class User(AbstractBaseUser):
             email.content_subtype = "html"
         for alt in alternatives:
             email.attach_alternative(alt[0], alt[1])
+
+        email = self._set_mandrill_options_on_email(email)
+
         email.send()
 
     def _send_mail(self, subject, content, from_email='', html=True):
@@ -435,6 +440,9 @@ class User(AbstractBaseUser):
         msg = EmailMessage(subject, content, from_email, [emailAddress])
         if html:
             msg.content_subtype = "html"  # Main content is now text/html
+
+        msg = self._set_mandrill_options_on_email(msg)
+
         msg.send()
 
     def _send_mail_from_template(self, subject, template_path, context={}, multialternatives=True):

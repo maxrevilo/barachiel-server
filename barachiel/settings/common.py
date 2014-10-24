@@ -81,7 +81,10 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # $ wget https://raw.github.com/aaronbassett/DisposableEmailChecker/master/disposable_email_domains.txt
-DISPOSABLE_EMAIL_DOMAINS = join(PROJECT_DIR, "static/disposable_email_domains.txt")
+DISPOSABLE_EMAIL_DOMAINS = join(PROJECT_DIR, "libs/disposable_email_domains.txt")
+EMAIL_SUBJECT_PREFIX = '[Waving] '
+ACCOUNT_GRACE_TIME = 14
+DEFAULT_FROM_EMAIL = 'contact@example.com'
 
 SESSION_COOKIE_AGE = 2419200
 #CSRF_FAILURE_VIEW = 'apps.auth.views.csrf_failure'

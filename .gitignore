@@ -1,7 +1,7 @@
 *.sqlite
 barachiel/settings/dev.py
 venv
-static/
+public/static/
 
 #################
 ## Sublime Text 2
