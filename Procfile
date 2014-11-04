@@ -1,1 +1,1 @@
-web: gunicorn barachiel.wsgi
+web: waitress-serve --port=$PORT barachiel.wsgi:application
