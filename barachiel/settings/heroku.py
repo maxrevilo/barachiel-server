@@ -1,4 +1,5 @@
 from os.path import join
+import sys
 
 # Local settings for the project.
 try:
@@ -21,6 +22,7 @@ ADMINS = (
 
 MIDDLEWARE_CLASSES += (
     'libs.middlewares.ssl_middleware.SSLMiddleware',
+    'log_request_id.middleware.RequestIDMiddleware',
 )
 
 INSTALLED_APPS += (
@@ -69,6 +71,38 @@ SECRET_KEY = environ['DJANGO_SECRET_KEY']
 # EMAIL_HOST_USER = 'contact@waving.com'
 # EMAIL_HOST_PASSWORD = '<your email password>'
 # EMAIL_USE_TLS = True
+
+
+# Logging for Heroku
+LOG_REQUEST_ID_HEADER = 'HTTP_X_REQUEST_ID'
+LOG_REQUESTS = True
+
+LOGGING["filters"]['request_id'] = {
+    '()': 'log_request_id.filters.RequestIDFilter'
+}
+
+LOGGING["formatters"]['standard'] = {
+    'format': '%(levelname)-8s [%(asctime)s] [%(request_id)s] %(name)s: %(message)s'
+}
+
+LOGGING['loggers']["django"] = {
+    "handlers": ["console"],
+}
+
+LOGGING['loggers']["log_request_id.middleware"] = {
+    'handlers': ['console'],
+    'level': 'DEBUG',
+    'propagate': False,
+}
+
+LOGGING['handlers']["console"] = {
+    "level": "INFO",  # 'DEBUG',
+    "class": "logging.StreamHandler",
+    'stream': sys.stdout,
+    'filters': ['request_id'],
+    'formatter': 'standard',
+}
+
 
 if not DEBUG:
     MANDRILL_API_KEY = environ['MANDRILL_API_KEY']

@@ -84,7 +84,6 @@ class Media(models.Model):
 
         fh = storage.open(self.file.name, "w")
 
-        print '+ + + +  file path + + + ' + self.file.url
         # file_path = self.file.url
 
         result = {

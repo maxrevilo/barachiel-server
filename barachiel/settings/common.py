@@ -62,7 +62,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'django.middleware.transaction.TransactionMiddleware',
     # 3rd Party middlewares:
-    'libs.middlewares.crossdomainxhr.XsSharingMiddleware'
+    'libs.middlewares.crossdomainxhr.XsSharingMiddleware',
 )
 
 ROOT_URLCONF = 'barachiel.urls'
@@ -128,6 +128,7 @@ LOGGING = {
             '()': 'django.utils.log.RequireDebugFalse'
         }
     },
+    'formatters': {},
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
