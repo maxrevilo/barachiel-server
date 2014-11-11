@@ -1,15 +1,14 @@
-from os.path import join
 import sys
+from os import environ
+from os.path import join
+import dj_database_url
+# from S3 import CallingFormat
 
 # Local settings for the project.
 try:
     from barachiel.settings.common import *
 except ImportError as e:
     raise Exception('settings/common.py not available\n%s\n' % (str(e),))
-
-from os import environ
-import dj_database_url
-# from S3 import CallingFormat
 
 #Don't use trailing slash!
 BASE_URL = 'https://barachiel.herokuapp.com'

@@ -8,6 +8,7 @@ from datetime import date, datetime, timedelta
 #from django.template import Context, loader
 #from django.core.mail import send_mail
 from django.http import HttpResponse, HttpResponseForbidden
+from django.conf import settings
 from django.views.generic import View
 from django.shortcuts import get_object_or_404
 #from django.contrib.auth.decorators import login_required
@@ -143,11 +144,9 @@ class UsersListView(View):
         if not request.user.is_authenticated():
             return HttpResponse('Unauthorized', status=401)
 
-        TIME_TO_GHOSTING = timedelta(hours=2)
-
         user = request.user
 
-        if user.geo_time < datetime.now()-TIME_TO_GHOSTING:
+        if user.geo_time < datetime.now() - settings.TIME_TO_GHOSTING:
             return HttpResponse(status=203)
 
         limit = 20
@@ -164,17 +163,15 @@ class UsersListView(View):
         if ulat == 0 and ulon == 0:
             response = []
         else:
-            # 1000x1000 square
-            dlat = change_in_latitude(5000)
-            dlon = change_in_longitude(ulat, 5000)
+            dlat = change_in_latitude(settings.RADAR_RAIUS)
+            dlon = change_in_longitude(ulat, settings.RADAR_RAIUS)
 
             #print "lat [%f, %f] lon [%f, %f]" % (ulat-dlat, ulat+dlat, ulon-dlon, ulon+dlon)
 
-            users = User.objects\
-                        .filter(
-                            #Filter by expiry
-                            geo_time__gt=datetime.now() - TIME_TO_GHOSTING,
-                            #Filter by geolocation
+            users = User.objects.filter(
+                            # Filter by time
+                            geo_time__gt=datetime.now() - settings.TIME_TO_GHOSTING,
+                            # Filter by distance
                             geo_lat__gte=ulat-dlat,
                             geo_lat__lte=ulat+dlat,
                             geo_lon__gte=ulon-dlon,
