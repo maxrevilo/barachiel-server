@@ -92,15 +92,15 @@ class User(AbstractBaseUser):
     WHO_USER_LIKED  = 'L'
     WHO_USER_NOBODY = 'N'
     WHO_USER = (
-        ('WHO_USER_NEAR',   'E'),
-        ('WHO_USER_LIKED',  'L'),
-        ('WHO_USER_NOBODY', 'N'),
+        (WHO_USER_NEAR,   'Near people'),
+        (WHO_USER_LIKED,  'Only who I Waved'),
+        (WHO_USER_NOBODY, 'Nobody'),
     )
 
     name       = models.CharField(max_length=128)
     email      = models.EmailField(unique=True)
     tel        = models.CharField(max_length=32, blank=True, default="")
-    picture    = models.ForeignKey('multimedia.Media', null=True, related_name='user', on_delete=models.SET_NULL)
+    picture    = models.ForeignKey('multimedia.Media', blank=True, null=True, related_name='user', on_delete=models.SET_NULL)
     sex        = models.CharField(choices=SEXS, max_length=1, default=SEX_UNKNOWN)
     r_interest = models.CharField(choices=R_INTERESTS, max_length=1, default=R_INTEREST_UNKNOWN)
     bio        = models.TextField(blank=True, default="")
