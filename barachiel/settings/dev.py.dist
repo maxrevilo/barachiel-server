@@ -23,9 +23,9 @@ STATIC_ROOT = join(PUBLIC_DIR, 'static')
 STATIC_URL = '/static/'
 
 if DEBUG:
-    STATICFILES_DIRS += (
-        string.replace(join(PROJECT_DIR, 'frontend/dev/'), '\\', '/'),
-    )
+    # STATICFILES_DIRS += (
+    #     string.replace(join(PROJECT_DIR, 'frontend/dev/'), '\\', '/'),
+    # )
     CORS_URLS_REGEX = r'.*'
 
 MANAGERS = ADMINS
