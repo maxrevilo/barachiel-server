@@ -10,6 +10,7 @@ PUBLIC_DIR = join(PROJECT_DIR, 'public')
 
 TIME_TO_GHOSTING = timedelta(minutes=int(environ.get('WAVING_TIME_TO_GHOSTING', 120)))
 RADAR_RAIUS = int(environ.get('WAVING_RADAR_RAIUS', 1000))
+IGNORE_DISTANCE = environ.get('WAVING_IGNORE_DISTANCE', 'False') == 'True'
 
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 TIME_ZONE = 'UTC'

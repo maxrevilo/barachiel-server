@@ -183,15 +183,16 @@ class UsersListView(View):
 
             #response = map(lambda u: u.preview(request.user), users) #TODO: DESCOMENTAR
 
-            #WARN: Solo para pruebas!!!!!!!!!!!!
             #TODO optimizar para producción y filtrar los más lejanos.
             user_pos = (ulat, ulon)
             response = []
             for u in users:
                 r = u.preview(request.user)
-                r['d'] = haversine_distance(user_pos, (u.geo_lat, u.geo_lon))
+                if settings.IGNORE_DISTANCE:
+                    r['d'] = 1
+                else:
+                    r['d'] = haversine_distance(user_pos, (u.geo_lat, u.geo_lon))
                 response.append(r)
-            #WARN: Solo para pruebas!!!!!!!!!!!!
 
         return HttpResponse(json.dumps(response), mimetype='application/json')
 
