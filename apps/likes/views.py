@@ -53,10 +53,6 @@ class LikesView(View):
             #TODO si ya existe pero con anonymous distinto actualizar.
             return HttpResponseBadRequest("Already Waved")
 
-    #def put(self, request, *args, **kwargs):
-    #def delete(self, request, *args, **kwargs):
-
-
 class LikesListView(View):
     def get(self, request, *args, **kwargs):
         user = request.user
@@ -68,9 +64,40 @@ class LikesListView(View):
         return HttpResponse(json.dumps(response),
                             mimetype='application/json')
 
+
+class LikesFromView(View):
+    #def put(self, request, *args, **kwargs):
+    def delete(self, request, *args, **kwargs):
+        user = request.user
+        if user is None:
+            return HttpResponseForbidden()
+
+        like = get_object_or_404(user.likes_from, id=kwargs['id'])
+        print "deleting " + str(like)
+        like.delete()
+
+        response = like.serialize(request.user)
+
+        return HttpResponse(json.dumps(response),
+                            mimetype='application/json')
+
+
+class LikesFromListView(View):
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        if user is None:
+            return HttpResponseForbidden()
+
+        response = map(lambda l: l.preview(user), user.likes_from.all()[:100])
+
+        return HttpResponse(json.dumps(response),
+                            mimetype='application/json')
+
     def post(self, request, *args, **kwargs):
         user_liker = request.user
-        user_liked = get_object_or_404(User, id=request.POST['user_id'])
+        if user_liker is None:
+            return HttpResponseForbidden()
+        user_liked = get_object_or_404(User, id=request.POST.get('user_id'))
 
         try:
             like = Like(

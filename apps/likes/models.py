@@ -27,7 +27,7 @@ class Like(models.Model):
         self.recalculate_likes()
 
     def delete(self, *args, **kwargs):
-        super(Like, self).save(*args, **kwargs)
+        super(Like, self).delete(*args, **kwargs)
         self.recalculate_likes()
 
     def recalculate_likes(self):
