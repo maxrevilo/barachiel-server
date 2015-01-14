@@ -5,14 +5,12 @@
 Thank you for signing up!
 -------------------------
 
-We have registered an account under this e-mail address ({{ user.email }}),
+We have registered an account under this E-Mail address ({{ user.email }}),
 on behalf of {{ user.name }}. This account will be active during the next
-{{ grace_time }} day(s). If you wish your account to be permanent, please
-go to your profile, and then select 'Confirm my E-Mail address'. A
-confirmation code will be requested. Please, enter the following code:
+{{ grace_time }} day(s). If you wish your account to be permanent, please go to the link below to confirm the E-Mail:
 
 
-{{ token }}
+{{ BASE_URL }}{% url 'email_confirm_token' user.id token %}
 
 
 If you have not signed up in Waving, just ignore this email and any other

@@ -339,19 +339,19 @@ class User(AbstractBaseUser):
             try:
                 conf = Confirmation.objects.get(user=self)
             except Confirmation.DoesNotExist:
-                return 404
+                return (404, 'Error: Token not found.')
             if conf.token != token:
-                return 403
+                return (403, 'Error: Token not found for user.')
             if self.id != conf.user.id:
-                return 403
+                return (403, 'Error: Token not found for user.')
             if self._email_wtc != conf.email:
-                return 403
+                return (403, 'Error: Old token used.')
             # confirmation ok
             conf.delete()
             self._confirm_email()
-            return 200
+            return (200, 'Email Confirmed.')
         else:
-            return 405
+            return (405, 'Email already confirmed.')
 
     def _confirm_email(self):
         if not self.email_is_confirmed:

@@ -2,11 +2,11 @@
 ###                        Waving!                        ###
 #############################################################
 
-We have registered a new e-mail address ({{ user.email }}), on behalf of
-{{ user.name }}. Please go to your profile, and then select 'Confirm my E-Mail address'. A confirmation code will be requested. Please, enter the following code:
+We have registered a new E-Mail address ({{ user.email }}), on behalf of
+{{ user.name }}. Please go to the link below to confirm the E-Mail:
 
 
-{{ token }}
+{{ BASE_URL }}{% url 'email_confirm_token' user.id token %}
 
 
 Kind regards,

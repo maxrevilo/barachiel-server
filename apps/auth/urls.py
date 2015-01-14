@@ -6,7 +6,8 @@ from views import (
     logout,
     reset_password,
     change_password,
-    email_confirm
+    email_confirm,
+    EmailConfirmTokenView
 )
 #from django.views.decorators.csrf import csrf_exempt
 
@@ -23,4 +24,6 @@ urlpatterns = patterns('',
     url(r'^change_password/$', change_password, name='change_password'),
 
     url(r'^confirm_email/$', email_confirm, name='email_confirm_reminder'),
+
+    url(r'^confirm_email/user/(?P<id>\d+|me)/token/(?P<token>.+)/$', EmailConfirmTokenView.as_view(), name='email_confirm_token'),
 )

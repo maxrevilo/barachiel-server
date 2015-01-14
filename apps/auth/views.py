@@ -151,7 +151,7 @@ class EmailConfirmView(View):
         if not reduce(operator.and_, map(lambda x: x in VALID_CHARS, code), True) or len(code) != 8:
             return HttpResponseBadRequest()
 
-        status = user.confirm_email(code)
+        status, text = user.confirm_email(code)
 
         responses = {
             200: HttpResponse,
@@ -167,3 +167,15 @@ class EmailConfirmView(View):
         return responses[status](param)
 
 email_confirm = EmailConfirmView.as_view()
+
+
+class EmailConfirmTokenView(View):
+
+    def get(self, request, *args, **kwargs):
+        user_id = kwargs['id']
+        token = kwargs['token']
+
+        user = get_object_or_404(User, pk=user_id)
+        status, text = user.confirm_email(token)
+
+        return HttpResponse(text, status=status)

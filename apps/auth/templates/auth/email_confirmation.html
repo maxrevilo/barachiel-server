@@ -12,11 +12,11 @@
         	<h3>Thank you for signing up!</h3>
 
         	<p>
-        		We have registered an account under this e-mail address ({{ emailAddress }}), on behalf of <span class="emph">{{ user.name }}</span>. This account will be active during the next {{ grace_time }} day(s). If you wish your account to be permanent, please go to your profile, and then select <span class="emph">Confirm my E-Mail address</span>. A confirmation code will be requested. Please, enter the following code:
+        		We have registered an account under this E-Mail address ({{ emailAddress }}), on behalf of <span class="emph">{{ user.name }}</span>. This account will be active during the next {{ grace_time }} day(s). If you wish your account to be permanent, please go to the link below to confirm the E-Mail:
         	</p>
 
         	<p class="confirmation-code">
-        		{{ token }}
+                {{ BASE_URL }}{% url 'email_confirm_token' user.id token %}
         	</p>
 
         	<p>
