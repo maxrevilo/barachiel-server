@@ -1,0 +1,38 @@
+[
+{
+    "pk": 1, 
+    "model": "users.user", 
+    "fields": {
+        "tel": "", 
+        "bio": "", 
+        "sex": "U", 
+        "sentimental_status": "U", 
+        "off_radar": false, 
+        "liked_number": 0, 
+        "how_can_see_bio": "E", 
+        "geo_lat": 0.0, 
+        "r_interest": "U", 
+        "_created_at": "2014-06-06T17:10:11.474", 
+        "how_can_see_picture": "E", 
+        "last_login": "2014-06-06T17:12:23.949", 
+        "how_can_see_tel": "L", 
+        "email": "test1@t.com", 
+        "picture": null, 
+        "_updated_at": "2014-06-06T17:10:11.602", 
+        "likes_number": 0, 
+        "_email_wtc": "test1@t.com", 
+        "is_active": true, 
+        "birthday": null, 
+        "is_admin": true, 
+        "how_can_see_ss": "E", 
+        "geo_lon": 0.0, 
+        "password": "pbkdf2_sha256$12000$657ISm2WR31E$MCA9nMWbcmRHOtxmxQaoiVLTQsrmeZbZfWXv2KFLuMk=", 
+        "geo_time": "2014-06-06T17:10:11.473", 
+        "how_can_see_name": "E", 
+        "name": "Test User 1", 
+        "age": 0, 
+        "how_can_see_email": "L", 
+        "how_can_see_age": "E"
+    }
+}
+]

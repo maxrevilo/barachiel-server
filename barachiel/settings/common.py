@@ -116,6 +116,7 @@ INSTALLED_APPS = (
     'apps.auth',
     'apps.push',
     'apps.users',
+    'apps.referrals',
     'apps.likes',
     'apps.multimedia',
     'apps.debug_gps',

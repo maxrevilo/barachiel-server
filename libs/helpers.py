@@ -22,6 +22,15 @@ def PUT_dict(request, keys):
     return dictionary
 
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
 import math
 earth_radius = 6371000.0  # meters
 degrees_to_radians = math.pi/180.0

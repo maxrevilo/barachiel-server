@@ -1,11 +1,21 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseForbidden
+from django.http import HttpResponse
 
 
 def login_required_or_403(view_func):
     return user_passes_test(
         lambda u: u.is_authenticated()
     )(view_func)
+
+
+def is_authenticated_or_401(func):
+    def func_wrapper(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return HttpResponse('Unauthorized', status=401)
+        else:
+            return func(self, request, *args, **kwargs)
+    return func_wrapper
 
 
 def is_admin_or_forbiden(view_func, ignore_methods=[]):
