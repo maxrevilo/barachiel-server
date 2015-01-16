@@ -16,7 +16,7 @@ class ReferralsBaseTest(TestCase):
     def setUp(self):
         self.referrer_user = User.objects.get(email='test1@t.com')
         self.referrer_profile = self.referrer_user.referrer_profile
-        self.referred_user = User.objects.get(email='test2@t.com')
+        self.referred_user = User.objects.get(email='test3@t.com')
         logged = self.client.login(username=self.referred_user.email, password='1234')
         if logged is False:
             raise Exception("Test User not logged")

@@ -3,6 +3,6 @@ from models import Like
 
 
 class LikeAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('__str__', 'anonymous', '_created_at')
 
 admin.site.register(Like, LikeAdmin)
