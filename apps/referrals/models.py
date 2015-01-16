@@ -62,7 +62,7 @@ class ReferrerProfile(models.Model):
 class Referred(models.Model):
     """A Referred user by a Referrer user."""
     referrer = models.ForeignKey(ReferrerProfile, related_name='referrals')
-    user = models.ForeignKey(User, related_name='referrer', unique=True)
+    user = models.OneToOneField(User, related_name='referred', unique=True)
     IP = models.CharField(max_length=64)
     created_at = models.DateTimeField(auto_now_add=True)
     accepted = models.BooleanField(default=False)

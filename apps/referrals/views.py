@@ -15,7 +15,7 @@ class ReferralsListView(View):
     def post(self, request, *args, **kwargs):
         referred_user = request.user
         client_IP = get_client_ip(request)
-        referral_token = request.POST['token']
+        referral_token = request.POST['token'].upper()
         referrer_profile = get_object_or_404(ReferrerProfile, token=referral_token)
 
         if not referrer_profile.active:

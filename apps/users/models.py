@@ -9,6 +9,7 @@ from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import BaseUserManager
+from django.core.exceptions import ObjectDoesNotExist
 
 from apps.auth.models import Confirmation
 
@@ -161,6 +162,12 @@ class User(AbstractBaseUser):
             'email':    self.how_can_see_email,
         }
 
+    def has_referred(self):
+        try:
+            return self.referred is not None
+        except ObjectDoesNotExist:
+            return False
+
     def _trust_lvl(self, user):
         if user == self:
             #The highest level
@@ -247,6 +254,7 @@ class User(AbstractBaseUser):
                 'likes_number': self.likes_number,
                 'settings':     self.settings(),
                 'privacy':      self.privacy(),
+                'referred':     self.referred.serialize(user) if self.has_referred() else None,
 
                 '_updated_at': self._updated_at.isoformat(),
             })
