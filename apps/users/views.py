@@ -14,16 +14,14 @@ from django.shortcuts import get_object_or_404
 #from django.contrib.auth.decorators import login_required
 
 from libs.helpers import PUT, change_in_latitude, change_in_longitude, haversine_distance
+from libs.decorators import is_authenticated_or_401
 from models import User
 from apps.auth.signals import user_with_new_email
 
 
 class UsersInstanceView(View):
-    #@login_required
+    @is_authenticated_or_401
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            return HttpResponse('Unauthorized', status=401)
-
         user_id = kwargs['id']
         if user_id == 'me':
             user = request.user
@@ -35,10 +33,8 @@ class UsersInstanceView(View):
         return HttpResponse(json.dumps(response),
                             mimetype='application/json')
 
+    @is_authenticated_or_401
     def put(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            return HttpResponse('Unauthorized', status=401)
-
         user = request.user
         resp = {'settings': {}}
         #TODO Chequear y limpiar entradas
@@ -129,9 +125,8 @@ class UsersInstanceView(View):
             user_with_new_email.send(sender=self, user=user, user_just_created=False)
         return HttpResponse(json.dumps(resp), mimetype='application/json')
 
+    @is_authenticated_or_401
     def delete(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            return HttpResponse('Unauthorized', status=401)
 
         user = request.user
         user.delete()
@@ -139,11 +134,8 @@ class UsersInstanceView(View):
 
 
 class UsersListView(View):
-    #@login_required
+    @is_authenticated_or_401
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            return HttpResponse('Unauthorized', status=401)
-
         user = request.user
 
         if user.geo_time < datetime.now() - settings.TIME_TO_GHOSTING:
@@ -198,17 +190,13 @@ class UsersListView(View):
 
 
 class UsersPrivacyView(View):
+    @is_authenticated_or_401
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            return HttpResponse('Unauthorized', status=401)
-
         return HttpResponse(json.dumps(request.user.privacy()),
                             mimetype='application/json')
 
+    @is_authenticated_or_401
     def put(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            return HttpResponse('Unauthorized', status=401)
-
         user = request.user
 
         #TODO Chequear y limpiar entradas

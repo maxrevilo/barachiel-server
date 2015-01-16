@@ -7,12 +7,14 @@ from django.http import HttpResponseForbidden
 from libs.decorators import login_required_or_403
 from django.db import IntegrityError
 
+from libs.decorators import is_authenticated_or_401
 from models import Like
 from apps.users.models import User
 from apps.push.services import BarachielPushManager
 
 
 class LikesView(View):
+    @is_authenticated_or_401
     def get(self, request, *args, **kwargs):
         user = request.user
         if user is None:
@@ -27,6 +29,7 @@ class LikesView(View):
                             mimetype='application/json')
 
     # DEPRECATED DELETE!!!!!!
+    @is_authenticated_or_401
     def post(self, request, *args, **kwargs):
         user_liker = request.user
         user_liked = get_object_or_404(User, id=kwargs['id'])
@@ -53,11 +56,11 @@ class LikesView(View):
             #TODO si ya existe pero con anonymous distinto actualizar.
             return HttpResponseBadRequest("Already Waved")
 
+
 class LikesListView(View):
+    @is_authenticated_or_401
     def get(self, request, *args, **kwargs):
         user = request.user
-        if user is None:
-            return HttpResponseForbidden()
 
         response = map(lambda l: l.preview(user), user.likes_to.all()[:100])
 
@@ -67,10 +70,9 @@ class LikesListView(View):
 
 class LikesFromView(View):
     #def put(self, request, *args, **kwargs):
+    @is_authenticated_or_401
     def delete(self, request, *args, **kwargs):
         user = request.user
-        if user is None:
-            return HttpResponseForbidden()
 
         like = get_object_or_404(user.likes_from, id=kwargs['id'])
         print "deleting " + str(like)
@@ -83,20 +85,18 @@ class LikesFromView(View):
 
 
 class LikesFromListView(View):
+    @is_authenticated_or_401
     def get(self, request, *args, **kwargs):
         user = request.user
-        if user is None:
-            return HttpResponseForbidden()
 
         response = map(lambda l: l.preview(user), user.likes_from.all()[:100])
 
         return HttpResponse(json.dumps(response),
                             mimetype='application/json')
 
+    @is_authenticated_or_401
     def post(self, request, *args, **kwargs):
         user_liker = request.user
-        if user_liker is None:
-            return HttpResponseForbidden()
         user_liked = get_object_or_404(User, id=request.POST.get('user_id'))
 
         try:

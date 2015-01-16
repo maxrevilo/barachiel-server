@@ -19,6 +19,7 @@ from apps.users.models import User
 from apps.auth.signals import user_with_new_email
 from forms import SignUpForm, ChangePasswordForm, ResetPasswordForm
 from libs.helpers import PUT_dict
+from libs.decorators import is_authenticated_or_401
 
 
 @never_cache
@@ -88,6 +89,7 @@ reset_password = ResetPasswordView.as_view()
 
 class ChangePasswordView(View):
 
+    @is_authenticated_or_401
     def put(self, request, *args, **kwargs):
         request.PUT = PUT_dict(request, ['password', 'new_password'])
         user = request.user
@@ -118,17 +120,13 @@ change_password = ChangePasswordView.as_view()
 
 
 class EmailConfirmView(View):
-
+    @is_authenticated_or_401
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
-            request.user.send_confirmation_reminder_mail()
-            return HttpResponse()
-        else:
-            return HttpResponseForbidden()
+        request.user.send_confirmation_reminder_mail()
+        return HttpResponse()
 
+    @is_authenticated_or_401
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            return HttpResponseForbidden()
         # check if user needs confirmation
         user = request.user
         if user.email_is_confirmed:

@@ -8,6 +8,7 @@ from django.views.generic import View
 # from django.core.exceptions import ObjectDoesNotExist
 
 from models import Media
+from libs.decorators import is_authenticated_or_401
 
 
 # class MediaInstance(View):
@@ -33,6 +34,7 @@ from models import Media
 #             return HttpResponseForbidden()
 
 class MediaUser(View):
+    @is_authenticated_or_401
     def post(self, request, *args, **kwargs):
         user = request.user
         media = Media.from_request(request, user)

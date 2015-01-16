@@ -9,14 +9,12 @@ from django.shortcuts import get_object_or_404
 #from libs.helpers import PUT, change_in_latitude, change_in_longitude, haversine_distance
 from models import Position
 from apps.users.models import User
+from libs.decorators import is_authenticated_or_401
 
 
 class PositionView(View):
-
+    @is_authenticated_or_401
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            return HttpResponse('Unauthorized', status=401)
-
         position = get_object_or_404(Position, id=kwargs['id'])
 
         return HttpResponse(json.dumps(position.serialize(request.user)),
@@ -24,10 +22,8 @@ class PositionView(View):
 
 
 class PositionsView(View):
-
+    @is_authenticated_or_401
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            return HttpResponse('Unauthorized', status=401)
 
         defaults = {
             'user_id': None,
@@ -69,9 +65,8 @@ class PositionsView(View):
         return HttpResponse(json.dumps(response),
                             mimetype='application/json')
 
+    @is_authenticated_or_401
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            return HttpResponse('Unauthorized', status=401)
 
         defaults = {
             "lat": None,  # Required
