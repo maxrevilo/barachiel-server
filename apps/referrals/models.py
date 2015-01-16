@@ -11,13 +11,13 @@ class ReferrerProfile(models.Model):
     """ Represents the referrer profile of an user,
         which holds all the referred from the user
     """
-    user = models.OneToOneField(User, related_name='referrer_profile')
+    user = models.OneToOneField(User, related_name='referrer_profile', unique=True)
     token = models.CharField(max_length=8)
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        unique_together = ('created_at',)
+    # class Meta:
+    #     unique_together = ('user',)
 
     def refer_user(self, user, client_IP):
         referred = Referred(
@@ -27,10 +27,20 @@ class ReferrerProfile(models.Model):
         )
         try:
             referred.save()
+            pass
         except IntegrityError:
             return None
         else:
             return referred
+
+    def accepted_referrals(self):
+        return self.referrals.filter(accepted=True)
+
+    def accepted_referrals_count(self):
+        return self.accepted_referrals().count()
+
+    def total_referrals_count(self):
+        return self.referrals.count()
 
     def preview(self, user):
         return {
@@ -52,7 +62,7 @@ class ReferrerProfile(models.Model):
 class Referred(models.Model):
     """A Referred user by a Referrer user."""
     referrer = models.ForeignKey(ReferrerProfile, related_name='referrals')
-    user = models.ForeignKey(User, related_name='referrer')
+    user = models.ForeignKey(User, related_name='referrer', unique=True)
     IP = models.CharField(max_length=64)
     created_at = models.DateTimeField(auto_now_add=True)
     accepted = models.BooleanField(default=False)

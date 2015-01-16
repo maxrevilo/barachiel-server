@@ -3,7 +3,7 @@ from models import Device, Chunk
 
 
 class DeviceAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('__str__', 'user', 'last_sync')
 admin.site.register(Device, DeviceAdmin)
 
 
@@ -13,5 +13,5 @@ class DeviceInline(admin.TabularInline):
 
 
 class ChunkAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('__str__', 'devices_number', 'expiration', 'created_at')
 admin.site.register(Chunk, ChunkAdmin)
