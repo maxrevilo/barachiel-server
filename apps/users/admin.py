@@ -5,7 +5,8 @@ from models import User
 
 class UserAdmin(admin.ModelAdmin):
     date_hierarchy = '_created_at'
-    list_display = ('name', 'email', 'picture', 'is_admin', 'is_active', )
+    list_display = ('image_tag', 'name', 'email', 'is_admin', 'is_active', )
+    readonly_fields = ('image_tag_big',)
     list_editable = ('is_active', )
     list_filter = ('is_admin', 'is_active', )
     # list_select_related = ('devices', 'likes_from', 'likes_to')

@@ -308,6 +308,24 @@ class User(AbstractBaseUser):
     def get_full_name(self):
         return self.name
 
+    def image_tag(self):
+        base_tag = u'<img src="%s" height="64" width="64" />'
+        no_image_url = 'http://placehold.it/64&text=No+Picture'
+        url = self.picture.preview(None)["xLit"] if self.picture else no_image_url
+        image = base_tag % url
+        return image
+    image_tag.short_description = 'Picture'
+    image_tag.allow_tags = True
+
+    def image_tag_big(self):
+        base_tag = u'<img src="%s"/>'
+        no_image_url = 'http://placehold.it/1024&text=No+Picture'
+        url = self.picture.file.url if self.picture else no_image_url
+        image = base_tag % url
+        return image
+    image_tag_big.short_description = 'Large Picture'
+    image_tag_big.allow_tags = True
+
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
 
