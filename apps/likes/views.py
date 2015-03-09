@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden
 from libs.decorators import login_required_or_403
 from django.db import IntegrityError
+from django.core.exceptions import ObjectDoesNotExist
 
 from libs.decorators import is_authenticated_or_401
 from models import Like
@@ -98,25 +99,37 @@ class LikesFromListView(View):
     def post(self, request, *args, **kwargs):
         user_liker = request.user
         user_liked = get_object_or_404(User, id=request.POST.get('user_id'))
+        is_anonymous = request.POST.get('anonym') == "true"
 
-        try:
-            like = Like(
-                liker     =user_liker,
-                liked     =user_liked,
-                anonymous =request.POST.get('anonym') == "true"
-            )
-            like.save()
-
-            response = like.serialize(user_liker)
-
+        def push(like):
             #---------****---  PUSH  ---****---------#
             yg_pm = BarachielPushManager()
             yg_pm.set_like(like)
             yg_pm.send()
 
+        try:
+            like = Like.objects.get(liker=user_liker, liked=user_liked)
+            like_anonymous = like.anonymous
+            like.anonymous = is_anonymous
+
+            if like_anonymous and not is_anonymous:
+                like.save()
+
+            push(like)
+
+            return HttpResponse("Already Waved", status=204)
+
+        except ObjectDoesNotExist:
+            like = Like(
+                liker     =user_liker,
+                liked     =user_liked,
+                anonymous =is_anonymous
+            )
+
+            like.save()
+            response = like.serialize(user_liker)
+
+            push(like)
+
             return HttpResponse(json.dumps(response),
                                 mimetype='application/json')
-
-        except IntegrityError:
-            #TODO si ya existe pero con anonymous distinto actualizar.
-            return HttpResponseBadRequest("Already Waved")

@@ -2,6 +2,7 @@
 barachiel/settings/dev.py
 venv
 public/static/
+swave/
 
 #################
 ## Sublime Text 2

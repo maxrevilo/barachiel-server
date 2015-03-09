@@ -74,4 +74,4 @@ class Position(models.Model):
         return result
 
     def __unicode__(self):
-        return "%s at %s" % (self.file.user.name, self.timestamp.isoformat())
+        return "%s at %s" % (self.device_type, self.timestamp.isoformat())
