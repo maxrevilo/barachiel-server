@@ -63,7 +63,7 @@ class LikesListView(View):
     def get(self, request, *args, **kwargs):
         user = request.user
 
-        response = map(lambda l: l.preview(user), user.likes_to.all()[:100])
+        response = map(lambda l: l.preview(user), user.likes_to.all().order_by('_updated_at')[:100])
 
         return HttpResponse(json.dumps(response),
                             mimetype='application/json')
@@ -90,7 +90,7 @@ class LikesFromListView(View):
     def get(self, request, *args, **kwargs):
         user = request.user
 
-        response = map(lambda l: l.preview(user), user.likes_from.all()[:100])
+        response = map(lambda l: l.preview(user), user.likes_from.all().order_by('_updated_at')[:100])
 
         return HttpResponse(json.dumps(response),
                             mimetype='application/json')
@@ -109,11 +109,8 @@ class LikesFromListView(View):
 
         try:
             like = Like.objects.get(liker=user_liker, liked=user_liked)
-            like_anonymous = like.anonymous
             like.anonymous = is_anonymous
-
-            if like_anonymous and not is_anonymous:
-                like.save()
+            like.save()
 
             push(like)
 

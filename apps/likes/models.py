@@ -44,6 +44,7 @@ class Like(models.Model):
                 'id': self.id,
                 'user': None,
                 'liked': user == self.liker,
+                '_updated_at': self._updated_at.isoformat(),
                 'anonymous': self.anonymous
             }
 
@@ -76,4 +77,4 @@ class Like(models.Model):
 
     class Meta:
         unique_together = ('liker', 'liked')
-        ordering = ['_created_at']
+        ordering = ['_updated_at']
