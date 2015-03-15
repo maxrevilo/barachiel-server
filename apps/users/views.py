@@ -11,6 +11,7 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.conf import settings
 from django.views.generic import View
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 #from django.contrib.auth.decorators import login_required
 
 from libs.helpers import PUT, change_in_latitude, change_in_longitude, haversine_distance
@@ -52,7 +53,6 @@ class UsersInstanceView(View):
         send_user_with_new_email = False
         email_wtc = PUT(request, 'email_wtc')
         if email_wtc and email_wtc != user.email:
-            from django.db.models import Q
             users_using_this_email = User.objects.filter(Q(email=email_wtc) | Q(_email_wtc=email_wtc))
             if len(users_using_this_email) > 0:
                 return HttpResponseForbidden("Email address is already being used")

@@ -23,7 +23,7 @@
         "_email_wtc": "test1@t.com", 
         "is_active": true, 
         "birthday": null, 
-        "is_admin": true, 
+        "is_admin": false, 
         "how_can_see_ss": "E", 
         "geo_lon": 0.0, 
         "password": "pbkdf2_sha256$12000$657ISm2WR31E$MCA9nMWbcmRHOtxmxQaoiVLTQsrmeZbZfWXv2KFLuMk=", 

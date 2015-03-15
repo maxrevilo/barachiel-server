@@ -100,33 +100,34 @@ class LikesFromListView(View):
         user_liker = request.user
         user_liked = get_object_or_404(User, id=request.POST.get('user_id'))
         is_anonymous = request.POST.get('anonym') == "true"
+        message = request.POST.get('message')
 
-        def push(like):
-            #---------****---  PUSH  ---****---------#
-            yg_pm = BarachielPushManager()
-            yg_pm.set_like(like)
-            yg_pm.send()
-
+        already_waved = True
+        like = None
         try:
             like = Like.objects.get(liker=user_liker, liked=user_liked)
             like.anonymous = is_anonymous
-            like.save()
-
-            push(like)
-
-            return HttpResponse("Already Waved", status=204)
 
         except ObjectDoesNotExist:
+            already_waved = False
             like = Like(
                 liker     =user_liker,
                 liked     =user_liked,
                 anonymous =is_anonymous
             )
 
-            like.save()
-            response = like.serialize(user_liker)
+        like.save()
+        if message:
+            like.add_message(message)
 
-            push(like)
+        #---------****---  PUSH  ---****---------#
+        yg_pm = BarachielPushManager()
+        yg_pm.set_like(like)
+        yg_pm.send()
 
-            return HttpResponse(json.dumps(response),
-                                mimetype='application/json')
+        response = like.serialize(user_liker)
+        return HttpResponse(
+            json.dumps(response),
+            status=212 if already_waved else 200,
+            mimetype='application/json'
+        )

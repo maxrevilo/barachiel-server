@@ -4,6 +4,7 @@
 from django.db import models
 #from yougrups import settings
 from apps.users.models import User
+from django.db.models import Q
 
 
 class Like(models.Model):
@@ -29,6 +30,23 @@ class Like(models.Model):
     def delete(self, *args, **kwargs):
         super(Like, self).delete(*args, **kwargs)
         self.recalculate_likes()
+
+    def add_message(self, message):
+        message = LikeMessage(
+            author=self.liker,
+            like=self,
+            content=message,
+        )
+        message.save()
+        return message
+
+    def conversation(self):
+        messages = LikeMessage.objects.filter(
+            Q(like__liker=self.liker, like__liked=self.liked) |
+            Q(like__liker=self.liked, like__liked=self.liker)
+        ).order_by('_created_at')
+
+        return messages
 
     def recalculate_likes(self):
         self.liker.likes_number = self.liker.likes_from.count()
@@ -64,7 +82,7 @@ class Like(models.Model):
             result = dict(self.preview(user),
                 **{
                     '_created_at': self._created_at.isoformat(),
-                    'messages': map(lambda l: l.preview(user), self.messages.all()[:100])
+                    'messages': map(lambda l: l.preview(user), self.conversation().all()[:100])
                 })
 
             if user == self.liker or not self.anonymous:
@@ -97,8 +115,9 @@ class LikeMessage(models.Model):
     def save(self, *args, **kwargs):
         self.geo_lat = self.author.geo_lat
         self.geo_lon = self.author.geo_lon
+        self.content = self.content[:140]
 
-        super(Like, self).save(*args, **kwargs)
+        super(LikeMessage, self).save(*args, **kwargs)
 
     def preview(self, user):
         result = None
