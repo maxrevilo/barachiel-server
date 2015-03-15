@@ -64,6 +64,7 @@ class Like(models.Model):
             result = dict(self.preview(user),
                 **{
                     '_created_at': self._created_at.isoformat(),
+                    'messages': map(lambda l: l.preview(user), self.messages.all()[:100])
                 })
 
             if user == self.liker or not self.anonymous:
@@ -73,8 +74,58 @@ class Like(models.Model):
         return result
 
     def __unicode__(self):
-        return "%s To %s" % (self.liker.name, self.liked.name)
+        return "%s To %s" % (self.liker, self.liked)
 
     class Meta:
         unique_together = ('liker', 'liked')
         ordering = ['_updated_at']
+
+
+class LikeMessage(models.Model):
+    author  = models.ForeignKey(User, related_name='messages')
+    like    = models.ForeignKey(Like, related_name='messages')
+    content = models.TextField(blank=True, default=None, null=True)
+    geo_lat = models.FloatField(default=0)
+    geo_lon = models.FloatField(default=0)
+    # Remove when enough time
+    extra = models.TextField(blank=True, default=None, null=True)
+
+    #Server data
+    _updated_at = models.DateTimeField(auto_now=True, auto_now_add=True)
+    _created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        self.geo_lat = self.author.geo_lat
+        self.geo_lon = self.author.geo_lon
+
+        super(Like, self).save(*args, **kwargs)
+
+    def preview(self, user):
+        result = None
+
+        if user == self.like.liker or user == self.like.liked:
+            result = {
+                'yours': self.author == user,
+                'content': self.content,
+                '_created_at': self._created_at.isoformat(),
+            }
+
+        return result
+
+    def serialize(self, user):
+        result = None
+
+        if user == self.like.liker or user == self.like.liked:
+            result = dict(self.preview(user),
+                **{
+                    'id': self.id,
+                })
+
+            # if user == self.like.liker or not self.like.anonymous:
+            #     result['geo_lat'] = str(self.geo_lat)
+            #     result['geo_lon'] = str(self.geo_lon)
+
+        return result
+
+    def __unicode__(self):
+        return "%s at %s" % (self.author, self._created_at.isoformat())

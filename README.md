@@ -27,6 +27,14 @@ $ cp barachiel/settings/dev.py.dist barachiel/settings/dev.py
 
 Development
 ------
+### Initial Deploy
+First configure Heroku and create a remote to de app.
+```bash
+git push [heroku-remote] master
+heroku run python manage.py syncdb --all
+heroku run python manage.py migrate --fake
+```
+**Caution**: By default the admin is test1@t.com:1234.
 
 ### Endpoints
 https://www.getpostman.com/collections/34aa7e80c34fb254bdc7
