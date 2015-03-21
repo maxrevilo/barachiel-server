@@ -62,8 +62,8 @@ class Like(models.Model):
                 'id': self.id,
                 'user': None,
                 'liked': user == self.liker,
-                '_updated_at': self._updated_at.isoformat(),
-                'anonymous': self.anonymous
+                'anonymous': self.anonymous,
+                '_updated_at': self._updated_at.isoformat()
             }
 
             if user == self.liker:
@@ -79,10 +79,14 @@ class Like(models.Model):
         result = None
 
         if user == self.liker or user == self.liked:
+            message_query = self.messages.order_by('-_created_at').all()[:1]
+            message = message_query[0].preview(user) if len(message_query) > 0 else None
+
             result = dict(self.preview(user),
                 **{
-                    '_created_at': self._created_at.isoformat(),
-                    'messages': map(lambda l: l.preview(user), self.conversation().all()[:100])
+                    'message': message,
+                    'messages': map(lambda l: l.preview(user), self.conversation().all()[:100]),
+                    '_created_at': self._created_at.isoformat()
                 })
 
             if user == self.liker or not self.anonymous:
@@ -148,3 +152,6 @@ class LikeMessage(models.Model):
 
     def __unicode__(self):
         return "%s at %s" % (self.author, self._created_at.isoformat())
+
+    class Meta:
+        ordering = ['-_created_at']
