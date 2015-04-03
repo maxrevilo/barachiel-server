@@ -67,6 +67,9 @@ class UsersInstanceView(View):
 
         r_interest = PUT(request, 'r_interest')
         if r_interest:
+            if r_interest == 'undefined':
+                r_interest = 'R'
+                print "Known Error: user interest undefined"
             user.r_interest = r_interest
             resp['r_interest'] = r_interest
 
