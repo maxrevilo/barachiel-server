@@ -125,8 +125,19 @@ INSTALLED_APPS = (
     'logtailer',
     'sorl.thumbnail',
     'disposable_email_checker',
+    'django_rq',
     # 'django_inlinecss',
 )
+
+RQ_QUEUES = {
+    'default': {
+        'URL': environ.get('REDISTOGO_URL', 'redis://localhost:6379'),
+        'DB': 0,
+        'DEFAULT_TIMEOUT': 500,
+    }
+}
+# WARN: DJANGO_RQ with "RQ_SHOW_ADMIN_LINK = True" might override the admin template
+RQ_SHOW_ADMIN_LINK = True
 
 LOGGING = {
     'version': 1,
@@ -136,19 +147,34 @@ LOGGING = {
             '()': 'django.utils.log.RequireDebugFalse'
         }
     },
-    'formatters': {},
+    'formatters': {
+        "rq_console": {
+            "format": "%(asctime)s %(message)s",
+            "datefmt": "%H:%M:%S",
+        },
+    },
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        "rq_console": {
+            "level": "DEBUG",
+            "class": "rq.utils.ColorizingStreamHandler",
+            "formatter": "rq_console",
+            "exclude": ["%(asctime)s"],
+        },
     },
     'loggers': {
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
+        },
+        "rq.worker": {
+            "handlers": ["rq_console"],
+            "level": "DEBUG"
         },
     }
 }

@@ -18,12 +18,14 @@ urlpatterns = patterns('',
     (r'^debug_gps/', include('apps.debug_gps.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^logs/', include('logtailer.urls')),
+
+    # WARN: DJANGO_RQ with "RQ_SHOW_ADMIN_LINK = True" might override the admin template
+    (r'^django-rq/', include('django_rq.urls')),
 )
 
-from django.conf import settings
 if settings.DEBUG:
     urlpatterns += patterns('',
-        #Debug media files service:
+        # Debug media files service:
         (r'^'+settings.MEDIA_URL+'(?P<path>.*)$', 'django.views.static.serve',
         {'document_root':
             settings.MEDIA_ROOT,
