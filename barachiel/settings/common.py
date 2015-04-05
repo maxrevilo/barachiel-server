@@ -69,6 +69,7 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.transaction.TransactionMiddleware',
     # 3rd Party middlewares:
     'libs.middlewares.crossdomainxhr.XsSharingMiddleware',
+    'libs.middlewares.error_logging.ErrorLoggingMiddleware',
 )
 
 ROOT_URLCONF = 'barachiel.urls'
