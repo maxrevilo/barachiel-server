@@ -62,7 +62,7 @@ MIDDLEWARE_CLASSES = (
     # Django middlewares:
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -70,6 +70,7 @@ MIDDLEWARE_CLASSES = (
     # 3rd Party middlewares:
     'libs.middlewares.crossdomainxhr.XsSharingMiddleware',
     'libs.middlewares.error_logging.ErrorLoggingMiddleware',
+    'libs.middlewares.extend_user_session.ExtendUserSession',
 )
 
 ROOT_URLCONF = 'barachiel.urls'
@@ -93,7 +94,7 @@ EMAIL_SUBJECT_PREFIX = '[Waving] '
 ACCOUNT_GRACE_TIME = 14
 DEFAULT_FROM_EMAIL = 'contact@example.com'
 
-SESSION_COOKIE_AGE = 2419200
+SESSION_COOKIE_AGE = 5259487
 #CSRF_FAILURE_VIEW = 'apps.auth.views.csrf_failure'
 
 FIXTURE_DIRS = (
