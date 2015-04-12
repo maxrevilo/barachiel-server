@@ -1,20 +1,41 @@
 from django.core.management.base import BaseCommand, CommandError
-from django_dynamic_fixture import G
-from faker import Factory
-#from django.contrib.auth.hashers import make_password
 from apps.users.models import User
 from apps.likes.models import Like
+from apps.users.factories import UserFactory, FullUserInRadiusFactory
 
 class Command(BaseCommand):
     help = 'adds dinamic fixtures to the database'
 
     def handle(self, *args, **options):
-        ### INIT ###
-        fake = Factory.create()
-        password = "pbkdf2_sha256$12000$657ISm2WR31E$MCA9nMWbcmRHOtxmxQaoiVLTQsrmeZbZfWXv2KFLuMk="
 
         ### LOGIN TESTS ###
-        if User.objects.filter(email='test1@t.com').exists():
-            User.objects.filter(email='test1@t.com').delete()
-        G(User, name=fake.name(), email='test1@t.com', password=password, picture=None)
-        print('Test user Generated...')
+        if User.objects.filter(email='authtest@t.com').exists():
+            User.objects.filter(email='authtest@t.com').delete()
+        UserFactory.create(email='authtest@t.com')
+        print('Login user Generated...')
+
+        ### WAVE TESTS ###
+        #geo_here = {
+           #'lat': 51.5033630,
+           #'lon': -0.1276250
+        #}
+        #geo_far = {
+            #'lat': 10.1579310,
+            #'lon': -67.9972100
+        #}
+        #for i in range(1, 10):
+            #if User.objects.filter(email='wavetest%d@t.com' % i).exists():
+                #User.objects.filter(email='wavetest%d@t.com' % i).delete()
+            #geoloc = geo_here if i < 6 else geo_far
+            #G(
+                #User, 
+                #name=fake.name(), 
+                #email='wavetest%d@t.com' % i, 
+                #password=password, 
+                #picture=None, 
+                #geo_lat=geoloc['lat'], 
+                #geo_lon=geoloc['lon']
+            #)
+        #print('Wave users Generated...')
+
+        ### WAVE BACK TESTS ###
