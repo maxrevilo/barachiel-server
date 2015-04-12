@@ -4,6 +4,10 @@ from faker import Factory
 from apps.users.models import User
 
 fake = Factory.create()
+geo_here = {
+   'lat': 51.5033630,
+   'lon': -0.1276250
+}
 
 class UserFactory(factory.DjangoModelFactory):
     class Meta:
@@ -16,12 +20,8 @@ class UserFactory(factory.DjangoModelFactory):
     picture = None
 
 class UserInRadius(UserFactory):
-    _geo_here = {
-       'lat': 51.5033630,
-       'lon': -0.1276250
-    }
-    geo_lat =  factory.LazyAttribute(lambda o: float(fake.geo_coordinate(_geo_here['lat'], 0.001)))
-    geo_lon =  factory.LazyAttribute(lambda o: float(fake.geo_coordinate(_geo_here['lon'], 0.001)))
+    geo_lat =  factory.LazyAttribute(lambda o: float(fake.geo_coordinate(geo_here['lat'], 0.001)))
+    geo_lon =  factory.LazyAttribute(lambda o: float(fake.geo_coordinate(geo_here['lon'], 0.001)))
 
 class FullUserFactory(UserFactory):
     tel =  factory.LazyAttribute(lambda o: fake.phone_number())
@@ -34,10 +34,6 @@ class FullUserFactory(UserFactory):
     geo_lon =  factory.LazyAttribute(lambda o: float(fake.latitude()))
 
 class FullUserInRadiusFactory(FullUserFactory):
-    _geo_here = {
-       'lat': 51.5033630,
-       'lon': -0.1276250
-    }
-    geo_lat =  factory.LazyAttribute(lambda o: float(fake.geo_coordinate(_geo_here['lat'], 0.001)))
-    geo_lon =  factory.LazyAttribute(lambda o: float(fake.geo_coordinate(_geo_here['lon'], 0.001)))
+    geo_lat =  factory.LazyAttribute(lambda o: float(fake.geo_coordinate(geo_here['lat'], 0.001)))
+    geo_lon =  factory.LazyAttribute(lambda o: float(fake.geo_coordinate(geo_here['lon'], 0.001)))
 
