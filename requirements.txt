@@ -20,3 +20,5 @@ static==1.0.2
 waitress==0.8.9
 wsgiref==0.1.2
 django-rq==0.7.0
+factory_boy==2.5.0
+fake-factory==0.5

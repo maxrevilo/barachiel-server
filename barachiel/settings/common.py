@@ -95,7 +95,7 @@ ACCOUNT_GRACE_TIME = 14
 DEFAULT_FROM_EMAIL = 'contact@example.com'
 
 SESSION_COOKIE_AGE = 5259487
-#CSRF_FAILURE_VIEW = 'apps.auth.views.csrf_failure'
+# CSRF_FAILURE_VIEW = 'apps.auth.views.csrf_failure'
 
 FIXTURE_DIRS = (
     join(PROJECT_DIR, 'fixtures'),

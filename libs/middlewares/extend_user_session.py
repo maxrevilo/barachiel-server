@@ -9,8 +9,6 @@
 
     Based on http://stackoverflow.com/a/11423845/1024693
 """
-from datetime import timedelta
-from django.utils import timezone
 from django.conf import settings
 
 
@@ -21,5 +19,4 @@ class ExtendUserSession(object):
     def process_request(self, request):
         # Only extend the session for auth'd users
         if request.user.is_authenticated():
-            now = timezone.now()
-            request.session.set_expiry(now + timedelta(seconds=settings.SESSION_COOKIE_AGE))
+            request.session.set_expiry(settings.SESSION_COOKIE_AGE)
